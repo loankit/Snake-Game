@@ -130,6 +130,7 @@
         let gameLoopTimeout;
         let bonus = null; // Bonus block position
         let showBonus = false;
+        // Removed challenge variables
 
         // Initialize high score display
         highScoreElement.textContent = highScore;
@@ -209,9 +210,16 @@
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
                 foodsEaten++;
-                // Increase speed every 4 foods eaten
+                // Increase snake size by 25% every 4 foods
                 if (foodsEaten % 4 === 0) {
-                    speed = Math.max(30, Math.floor(speed * 0.85)); // Don't go below 30ms
+                    let grow = Math.ceil(snake.length * 0.25);
+                    for (let i = 0; i < grow; i++) {
+                        snake.push({...snake[snake.length - 1]});
+                    }
+                }
+                // Increase speed by 10% every 5 foods
+                if (foodsEaten % 5 === 0) {
+                    speed = Math.max(30, Math.floor(speed * 0.9)); // 10% faster, min 30ms
                 }
                 // Show bonus after every 5 foods
                 if (foodsEaten % 5 === 0) {
@@ -229,11 +237,12 @@
                     // Add extra tail segments at the end (repeat last segment)
                     snake.push({...snake[snake.length - 1]});
                 }
+            // Removed challenge block check
             } else {
                 snake.pop();
             }
         }
-
+        // Removed challenge drawing and logic functions
         function drawFood() {
             ctx.fillStyle = '#ef4444';
             ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
@@ -318,6 +327,7 @@
             speed = 200;
             showBonus = false;
             bonus = null;
+            // Removed challenge reset
             generateFood();
             gameOverElement.style.display = 'none';
             gameRunning = true;
